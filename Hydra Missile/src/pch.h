@@ -7,6 +7,7 @@
 #include "CTimer.h"
 #include "CMessages.h"
 #include "CCoronas.h"
+#include "CGeneral.h"
 
 #include "extensions/ScriptCommands.h"
 
@@ -42,4 +43,8 @@ static void DrawScreenText(char* text, CVector2D position, CRGBA color = CRGBA(0
 	CFont::SetProportional(true);
 
 	CFont::PrintString(position.x, position.y, text);
+}
+
+static float colorToFloat(unsigned char c) {
+	return (float)c / 255.0f;
 }

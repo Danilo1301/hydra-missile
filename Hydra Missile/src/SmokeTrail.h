@@ -14,6 +14,7 @@ public:
 	CRGBA m_Color = CRGBA(255, 255, 255);
 
 	SmokeTrail();
+	SmokeTrail(CEntity* entity);
 
 	void Update();
 	void Destroy();

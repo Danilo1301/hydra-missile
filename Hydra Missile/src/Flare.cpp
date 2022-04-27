@@ -29,35 +29,40 @@ void Flare::Update() {
 	}
 
 	if (m_FlareObject) {
-		float airResistance = 0.97f;
+		float airResistance = 0.98f;
 
 		m_FlareObject->m_pObjectInfo->m_fAirResistance = airResistance;
 		m_FlareObject->m_fAirResistance = airResistance;
 
+		float radius = CGeneral::GetRandomNumberInRange(0.5f, 0.9f);
+
 		int lightId = reinterpret_cast<unsigned int>(m_FlareObject) + 20;
-		Mod::RegisterCorona(lightId, m_FlareObject, CVector(0, 0, 0), CRGBA(255, 172, 0), 0.9f);
+		Mod::RegisterCorona(lightId, m_FlareObject, CVector(0, 0, 0), CRGBA(255, 172, 0), radius);
 
 		if (!m_SmokeTrail) {
 			m_SmokeTrail = new SmokeTrail();
 			m_SmokeTrail->m_Entity = m_FlareObject;
 		}
+
+		CVector fposition = m_FlareObject->GetPosition();
+		Command< 0x09E5 >(fposition.x, fposition.y, fposition.z, 255, 172, 0, 10.0f);
 	}
 
-	if (m_SmokeTrail) {
-		m_SmokeTrail->Update();
-	}
+	if (m_SmokeTrail) m_SmokeTrail->Update();
 }
 
 void Flare::Draw() {
+	return;
 
-	//DrawWorldText("FLARE ORIGIN", m_Object->GetPosition());
-	//DrawWorldText("FLARE", m_FlareObject->GetPosition());
+	DrawWorldText("FLARE ORIGIN", m_Object->GetPosition());
+	DrawWorldText("FLARE", m_FlareObject->GetPosition());
 }
 
 void Flare::Destroy() {
 	if (m_SmokeTrail) {
 		m_SmokeTrail->Destroy();
 		delete m_SmokeTrail;
+		m_SmokeTrail = NULL;
 	}
 	
 	if (m_FlareObject) {

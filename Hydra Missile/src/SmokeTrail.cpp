@@ -1,21 +1,21 @@
 #include "SmokeTrail.h"
 #include "Fx_c.h"
 
-static float colorToFloat(unsigned char c) {
-	return (float)c / 255.0f;
+/*
+prt_wheeldirt  prt_collisionsmoke
+	
+RwV3d offset = { 0.0f, 0.0f, 0.0f };
+m_SmokeFxSystem = g_fxMan.CreateFxSystem("prt_wheeldirt", &offset, nullptr, false);
+if (m_SmokeFxSystem) {
+	//smokeFx->CopyParentMatrix();
+	m_SmokeFxSystem->Play();
 }
+*/
 
-SmokeTrail::SmokeTrail() {
-	//prt_wheeldirt  prt_collisionsmoke
+SmokeTrail::SmokeTrail() {}
 
-	/*
-	RwV3d offset = { 0.0f, 0.0f, 0.0f };
-	m_SmokeFxSystem = g_fxMan.CreateFxSystem("prt_wheeldirt", &offset, nullptr, false);
-	if (m_SmokeFxSystem) {
-		//smokeFx->CopyParentMatrix();
-		m_SmokeFxSystem->Play();
-	}
-	*/
+SmokeTrail::SmokeTrail(CEntity* entity) {
+	m_Entity = entity;
 }
 
 void SmokeTrail::Update() {
