@@ -29,7 +29,7 @@ void Flare::Update() {
 	}
 
 	if (m_FlareObject) {
-		float airResistance = 0.98f;
+		float airResistance = 0.96f;
 
 		m_FlareObject->m_pObjectInfo->m_fAirResistance = airResistance;
 		m_FlareObject->m_fAirResistance = airResistance;

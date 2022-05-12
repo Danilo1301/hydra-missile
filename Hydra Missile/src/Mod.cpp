@@ -4,13 +4,8 @@
 #include "Flares.h"
 
 Mod::Mod() {
-	Events::objectRenderEvent += [](CObject* object) {
-		if (object->m_nModelIndex == 345) {
-			if (!Missiles::HasMissile(object)) Missiles::AddMissile(object);
-		}
-		if (object->m_nModelIndex == 354) {
-			if (!Flares::HasFlare(object)) Flares::AddFlares(object, 3);
-		}
+	Events::objectRenderEvent.after += [](CObject* object) {
+		
 	};
 
 	Events::drawingEvent += []() {
@@ -21,12 +16,27 @@ Mod::Mod() {
 		char text[256];
 		sprintf(text, "%d missiles; %d flares; %d hydras", Missiles::m_Missiles.size(), Flares::m_Flares.size(), Hydras::m_Hydras.size());
 		//DrawScreenText(text, {200, 400});
+
+		for (auto object : CPools::ms_pObjectPool) {
+			char text[256];
+			sprintf(text, "%d", object->m_nModelIndex);
+			//DrawWorldText(text, object->GetPosition());
+		}
 	};
 	
 	Events::processScriptsEvent += []() {
 		Missiles::Update();
 		Hydras::Update();
 		Flares::Update();
+
+		for (auto object : CPools::ms_pObjectPool) {
+			if (object->m_nModelIndex == 345) {
+				if (!Missiles::HasMissile(object)) Missiles::AddMissile(object);
+			}
+			if (object->m_nModelIndex == 354) {
+				if (!Flares::HasFlare(object)) Flares::AddFlares(object, 3);
+			}
+		}
 	};
 
 	Events::objectDtorEvent.after += [](CObject* object) {
@@ -55,9 +65,9 @@ CVehicle* Mod::GetNearestHydra(CVector position) {
 	{
 		if (vehicle->m_nModelIndex != 520) continue;
 
-		auto vehPos = vehicle->GetPosition();
+		auto vehPos = &vehicle->GetPosition();
 
-		float distance = DistanceBetweenPoints(vehPos, position);
+		float distance = DistanceBetweenPoints(*vehPos, position);
 
 		if (distance > nearestDistance) continue;
 
